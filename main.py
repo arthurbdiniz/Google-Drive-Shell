@@ -15,15 +15,6 @@ import os
 SCOPES = 'https://www.googleapis.com/auth/drive'
 
 class MyPrompt(Cmd):
-    global service
-
-    def do_hello(self, args):
-        """Says hello. If you provide a name, it will greet you with it."""
-        if len(args) == 0:
-            name = 'stranger'
-        else:
-            name = args
-        print ("Hello, %s" % name)
 
     def do_list(self, args):
         if len(args) == 0:
@@ -85,10 +76,58 @@ class MyPrompt(Cmd):
             'mimeType': 'application/vnd.google-apps.document'
         }
 
-        spreadsheet = service.files().create(body=file_metadata,
+        document = service.files().create(body=file_metadata,
                                         fields='id').execute()
 
-        print(spreadsheet)
+        print(document)
+
+    def do_create_drawing(self, args):
+        if len(args) == 0:
+            name = 'none'
+        else:
+            name = args.split()[-1]
+
+        file_metadata = {
+            'name': name,
+            'mimeType': 'application/vnd.google-apps.drawing'
+        }
+
+        drawing = service.files().create(body=file_metadata,
+                                        fields='id').execute()
+
+        print(drawing)
+
+    def do_create_form(self, args):
+        if len(args) == 0:
+            name = 'none'
+        else:
+            name = args.split()[-1]
+
+        file_metadata = {
+            'name': name,
+            'mimeType': 'application/vnd.google-apps.form'
+        }
+
+        form = service.files().create(body=file_metadata,
+                                        fields='id').execute()
+
+        print(form)
+
+    def do_create_slide(self, args):
+        if len(args) == 0:
+            name = 'none'
+        else:
+            name = args.split()[-1]
+
+        file_metadata = {
+            'name': name,
+            'mimeType': 'application/vnd.google-apps.presentation'
+        }
+
+        slide = service.files().create(body=file_metadata,
+                                        fields='id').execute()
+
+        print(slide)
 
     def do_create_file(self, args):
         name = args.split()[0]
@@ -127,12 +166,8 @@ class MyPrompt(Cmd):
 
 if __name__ == '__main__':
 
-
     global service
 
-    """Shows basic usage of the Drive v3 API.
-    Prints the names and ids of the first 10 files the user has access to.
-    """
     store = file.Storage('token.json')
     creds = store.get()
     if not creds or creds.invalid:
