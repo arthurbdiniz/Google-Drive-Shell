@@ -74,6 +74,22 @@ class MyPrompt(Cmd):
 
         print(spreadsheet)
 
+    def do_create_document(self, args):
+        if len(args) == 0:
+            name = 'none'
+        else:
+            name = args.split()[-1]
+
+        file_metadata = {
+            'name': name,
+            'mimeType': 'application/vnd.google-apps.document'
+        }
+
+        spreadsheet = service.files().create(body=file_metadata,
+                                        fields='id').execute()
+
+        print(spreadsheet)
+
     def do_create_file(self, args):
         name = args.split()[0]
         folder_id = args.split()[1]
