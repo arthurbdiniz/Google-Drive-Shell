@@ -179,14 +179,6 @@ if __name__ == '__main__':
     drive_service = build('drive', 'v3', http=creds.authorize(Http()))
     sheets_service = build('sheets', 'v4', http=creds.authorize(Http()))
 
-    spreadsheet_body = {
-        "properties": {
-            "title": "test"
-        }
-    }
-
-    request = sheets_service.spreadsheets().create(body=spreadsheet_body).execute()
-
     prompt = MyPrompt()
     prompt.prompt = '> '
     prompt.cmdloop('Starting prompt...')
