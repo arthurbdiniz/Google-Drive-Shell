@@ -20,4 +20,4 @@ See the library's installation page for the alternative installation options.
 Run the app using the following command:
 
 ```python
-python quickstart.py
+python3 main.py
