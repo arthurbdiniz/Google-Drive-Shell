@@ -12,7 +12,9 @@ import os
 # Get yout
 # https://developers.google.com/sheets/api/quickstart/python
 # https://developers.google.com/drive/api/v3/quickstart/python
-SCOPES = 'https://www.googleapis.com/auth/drive'
+SCOPES = [  'https://www.googleapis.com/auth/drive',
+            'https://www.googleapis.com/auth/spreadsheets',
+            'https://www.googleapis.com/auth/drive.file']
 
 class MyPrompt(Cmd):
 
@@ -22,7 +24,7 @@ class MyPrompt(Cmd):
         else:
             size = args.split()[-1]
 
-        results = service.files().list(
+        results = drive_service.files().list(
             pageSize=size, fields="nextPageToken, files(id, name)").execute()
         items = results.get('files', [])
 
@@ -44,7 +46,7 @@ class MyPrompt(Cmd):
             'mimeType': 'application/vnd.google-apps.folder'
         }
 
-        folder = service.files().create(body=file_metadata,
+        folder = drive_service.files().create(body=file_metadata,
                                         fields='id').execute()
 
         print(folder)
@@ -60,7 +62,7 @@ class MyPrompt(Cmd):
             'mimeType': 'application/vnd.google-apps.spreadsheet'
         }
 
-        spreadsheet = service.files().create(body=file_metadata,
+        spreadsheet = drive_service.files().create(body=file_metadata,
                                         fields='id').execute()
 
         print(spreadsheet)
@@ -76,7 +78,7 @@ class MyPrompt(Cmd):
             'mimeType': 'application/vnd.google-apps.document'
         }
 
-        document = service.files().create(body=file_metadata,
+        document = drive_service.files().create(body=file_metadata,
                                         fields='id').execute()
 
         print(document)
@@ -92,7 +94,7 @@ class MyPrompt(Cmd):
             'mimeType': 'application/vnd.google-apps.drawing'
         }
 
-        drawing = service.files().create(body=file_metadata,
+        drawing = drive_service.files().create(body=file_metadata,
                                         fields='id').execute()
 
         print(drawing)
@@ -108,7 +110,7 @@ class MyPrompt(Cmd):
             'mimeType': 'application/vnd.google-apps.form'
         }
 
-        form = service.files().create(body=file_metadata,
+        form = drive_service.files().create(body=file_metadata,
                                         fields='id').execute()
 
         print(form)
@@ -124,7 +126,7 @@ class MyPrompt(Cmd):
             'mimeType': 'application/vnd.google-apps.presentation'
         }
 
-        slide = service.files().create(body=file_metadata,
+        slide = drive_service.files().create(body=file_metadata,
                                         fields='id').execute()
 
         print(slide)
@@ -144,7 +146,7 @@ class MyPrompt(Cmd):
         media = MediaFileUpload(path,
                                 mimetype=type,
                                 resumable=True)
-        file_created = service.files().create(body=file_metadata,
+        file_created = drive_service.files().create(body=file_metadata,
                                             media_body=media,
                                             fields='id').execute()
         print(file_created)
@@ -152,7 +154,7 @@ class MyPrompt(Cmd):
     def do_delete(self, args):
         id = args.split()[0]
 
-        file_deleted = service.files().delete(fileId=id).execute()
+        file_deleted = drive_service.files().delete(fileId=id).execute()
         print('File deleted')
 
     def do_logout(self, args):
@@ -166,14 +168,24 @@ class MyPrompt(Cmd):
 
 if __name__ == '__main__':
 
-    global service
+    global drive_service
+    global sheets_service
 
     store = file.Storage('token.json')
     creds = store.get()
     if not creds or creds.invalid:
         flow = client.flow_from_clientsecrets('credentials.json', SCOPES)
         creds = tools.run_flow(flow, store)
-    service = build('drive', 'v3', http=creds.authorize(Http()))
+    drive_service = build('drive', 'v3', http=creds.authorize(Http()))
+    sheets_service = build('sheets', 'v4', http=creds.authorize(Http()))
+
+    spreadsheet_body = {
+        "properties": {
+            "title": "test"
+        }
+    }
+
+    request = sheets_service.spreadsheets().create(body=spreadsheet_body).execute()
 
     prompt = MyPrompt()
     prompt.prompt = '> '
