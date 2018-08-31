@@ -35,6 +35,11 @@ class MyPrompt(Cmd):
             for item in items:
                 print('{0} ({1})'.format(item['name'], item['id']))
 
+
+    def do_empty_trash(self, args):
+        file_deleted = drive_service.files().emptyTrash().execute()
+        print('Trash Empty')
+
     def do_create_folder(self, args):
         if len(args) == 0:
             name = 'none'
