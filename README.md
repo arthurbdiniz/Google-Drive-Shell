@@ -1,7 +1,7 @@
 # Google-Drive-CMD
 
 ### Requirements
-Python 3+ and Pip
+Python 3+ and Pip3
 
 ### Step 1: Turn on the Google Sheets API
 Access https://developers.google.com/sheets/api/quickstart/python

@@ -40,6 +40,17 @@ class MyPrompt(Cmd):
         file_deleted = drive_service.files().emptyTrash().execute()
         print('Trash Empty')
 
+    def do_get(self, args):
+        if len(args) == 0:
+            print('Please enter the file ID')
+            return
+        else:
+            id = args.split()[0]
+
+        file = drive_service.files().get(fileId=id).execute()
+        print(file)
+
+
     def do_create_folder(self, args):
         if len(args) == 0:
             name = 'none'
