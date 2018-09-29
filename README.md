@@ -10,7 +10,7 @@ Access https://developers.google.com/sheets/api/quickstart/python
 Run the following command to install the library using pip:
 
 ```shell
-pip install --upgrade google-api-python-client oauth2client
+pip3 install --upgrade google-api-python-client oauth2client
 ```
 
 See the library's installation page for the alternative installation options.
