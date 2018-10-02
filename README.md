@@ -21,3 +21,59 @@ Run the app using the following command:
 
 ```python
 python3 main.py
+```
+
+## Commands
+
+- List
+
+```
+$ list <number>
+```
+
+- Empty Trash
+
+```
+$ empty_trash
+```
+
+- Get Item
+
+```
+$ get <id>
+```
+
+- Create
+
+```
+$ create_folder <name>
+$ create_spreadsheet <name>
+$ create_document <name>
+$ create_drawing <name>
+$ create_form <name>
+$ create_slide <name>
+$ create_file <name> <id> <path> <type>
+```
+
+- Delete
+
+```
+$ delete <id>
+```
+
+- Logout
+
+```
+$ logout
+```
+
+- Quit
+
+```
+$ quit
+```
+
+
+
+
+
